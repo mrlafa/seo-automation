@@ -1,0 +1,286 @@
+.theblog-wrap .theblog-panel {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 16px 20px;
+	margin: 16px 0;
+}
+
+.theblog-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin: 16px 0;
+}
+
+.theblog-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 16px 24px;
+	min-width: 160px;
+	display: flex;
+	flex-direction: column;
+}
+
+.theblog-card-number {
+	font-size: 28px;
+	font-weight: 600;
+	line-height: 1.2;
+}
+
+.theblog-card-label {
+	color: #646970;
+	font-size: 13px;
+}
+
+.theblog-status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	background: #f0f0f1;
+}
+
+.theblog-status-ready,
+.theblog-status-published {
+	background: #d9ead3;
+}
+
+.theblog-status-error,
+.theblog-status-rejected {
+	background: #f4cccc;
+}
+
+.theblog-status-processing {
+	background: #fff2cc;
+}
+
+.theblog-error-text {
+	color: #b32d2e;
+	font-size: 12px;
+}
+
+.theblog-review-item {
+	display: flex;
+	gap: 16px;
+}
+
+.theblog-review-thumb img,
+.theblog-review-thumb-placeholder {
+	width: 80px;
+	height: 80px;
+	border-radius: 4px;
+	object-fit: cover;
+	background: #f0f0f1;
+	display: block;
+}
+
+.theblog-review-body {
+	flex: 1;
+}
+
+.theblog-review-body h2 {
+	margin: 0 0 6px;
+}
+
+.theblog-meta-row span {
+	margin-right: 16px;
+	color: #646970;
+}
+
+.theblog-review-actions {
+	margin-top: 10px;
+	display: flex;
+	gap: 8px;
+}
+
+.theblog-link-delete {
+	color: #b32d2e;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.theblog-logs-table td,
+.theblog-logs-table th {
+	vertical-align: top;
+}
+
+.theblog-log-level {
+	text-transform: uppercase;
+	font-size: 11px;
+	padding: 2px 6px;
+	border-radius: 3px;
+	background: #f0f0f1;
+}
+
+.theblog-log-error {
+	background: #f4cccc;
+}
+
+.theblog-source-toggle {
+	display: flex;
+	gap: 8px;
+	margin: 12px 0 16px;
+}
+
+.theblog-toggle-option {
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 8px 16px;
+	cursor: pointer;
+	background: #f6f7f7;
+}
+
+.theblog-toggle-option:has(input:checked) {
+	background: #2271b1;
+	color: #fff;
+	border-color: #2271b1;
+}
+
+.theblog-toggle-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.theblog-toggle-option input {
+	margin-right: 6px;
+}
+
+.theblog-warning-text {
+	color: #996800;
+}
+
+.theblog-mode-panel {
+	margin-top: 8px;
+}
+
+.theblog-inline-spinner {
+	float: none;
+	vertical-align: middle;
+	margin-left: 4px;
+}
+
+.theblog-analyze-result {
+	margin-top: 10px;
+	padding: 10px;
+	background: #f0f6fc;
+	border: 1px solid #c5d9ed;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.theblog-analyze-thumb {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.theblog-analyze-error {
+	margin-top: 10px;
+	padding: 10px;
+	background: #fcf0f1;
+	border: 1px solid #f4cccc;
+	border-radius: 4px;
+	color: #b32d2e;
+}
+
+.theblog-seo-analysis {
+	margin-top: 12px;
+	padding: 12px;
+	background: #f6f7f7;
+	border-radius: 4px;
+}
+
+.theblog-seo-scores {
+	display: flex;
+	gap: 24px;
+	margin-bottom: 10px;
+}
+
+.theblog-seo-score-badge {
+	font-size: 22px;
+	font-weight: 600;
+}
+
+.theblog-seo-score-label {
+	font-size: 12px;
+	color: #646970;
+	display: block;
+}
+
+.theblog-seo-category {
+	margin-top: 8px;
+	background: #fff;
+	border: 1px solid #e2e4e7;
+	border-radius: 4px;
+	padding: 6px 10px;
+}
+
+.theblog-seo-category summary {
+	cursor: pointer;
+	font-weight: 600;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.theblog-seo-category-count {
+	font-weight: 400;
+	color: #646970;
+	font-size: 12px;
+}
+
+.theblog-seo-technical {
+	background: #f6f7f7;
+}
+
+.theblog-seo-checks {
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	columns: 2;
+}
+
+.theblog-seo-checks li.pass::before {
+	content: "\2713 ";
+	color: #2a8f4d;
+}
+
+.theblog-seo-checks li.fail::before {
+	content: "\2717 ";
+	color: #b32d2e;
+}
+
+.theblog-seo-warnings {
+	margin-top: 8px;
+	color: #996800;
+}
+
+.theblog-seo-disclaimer {
+	font-size: 11px;
+	color: #8c8f94;
+	font-style: italic;
+	margin-top: 8px;
+}
+
+.theblog-faq-details {
+	margin-top: 10px;
+	background: #f6f7f7;
+	padding: 8px 12px;
+	border-radius: 4px;
+}
+
+.theblog-faq-details summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.theblog-faq-details ul {
+	margin: 8px 0 0 18px;
+}
