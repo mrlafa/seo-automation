@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Fix;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Carries a machine-readable code alongside the message so the REST layer can

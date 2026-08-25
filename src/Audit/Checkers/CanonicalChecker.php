@@ -12,7 +12,9 @@ use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\PostChecker;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Inspects explicitly set canonical URLs.

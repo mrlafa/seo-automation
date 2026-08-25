@@ -9,7 +9,9 @@ namespace SEOAgent\Fix;
 
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Fixers are split into planning and writing so that every fix can be

@@ -14,6 +14,8 @@
 use SEOAgent\Admin\AdminMenu;
 
 defined( 'ABSPATH' ) || exit;
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.WP.GlobalVariablesOverride.Prohibited -- This template is include()d from inside a class method, so the variables below are function-scoped locals, not globals.
 ?>
 <div class="wrap">
 	<h1><?php esc_html_e( 'SEO Agent settings', 'seo-automation' ); ?></h1>

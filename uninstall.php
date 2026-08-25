@@ -12,7 +12,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 delete_option( 'theblog_settings' );
 delete_option( 'theblog_logs' );
 
-$topics = get_posts(
+$seo_automation_topics = get_posts(
 	array(
 		'post_type'      => 'theblog_topic',
 		'posts_per_page' => -1,
@@ -21,8 +21,8 @@ $topics = get_posts(
 	)
 );
 
-foreach ( $topics as $topic_id ) {
-	wp_delete_post( $topic_id, true );
+foreach ( $seo_automation_topics as $seo_automation_topic_id ) {
+	wp_delete_post( $seo_automation_topic_id, true );
 }
 
 // SEO Agent uninstall
@@ -42,14 +42,14 @@ delete_option( 'seo_agent_llms_txt' );
 wp_clear_scheduled_hook( 'seo_agent_scheduled_audit' );
 
 // Capability.
-$role = get_role( 'administrator' );
-if ( $role ) {
-	$role->remove_cap( 'manage_seo_agent' );
+$seo_automation_admin_role = get_role( 'administrator' );
+if ( $seo_automation_admin_role ) {
+	$seo_automation_admin_role->remove_cap( 'manage_seo_agent' );
 }
 
 // Working meta the plugin wrote for its own use, which is not site content.
-foreach ( array( '_seo_agent_simhash', '_seo_agent_simhash_source' ) as $meta_key ) {
-	delete_post_meta_by_key( $meta_key );
+foreach ( array( '_seo_agent_simhash', '_seo_agent_simhash_source' ) as $seo_automation_meta_key ) {
+	delete_post_meta_by_key( $seo_automation_meta_key );
 }
 
 // Transients used to carry state between audit slices.

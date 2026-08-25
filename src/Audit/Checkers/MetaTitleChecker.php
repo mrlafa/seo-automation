@@ -14,7 +14,9 @@ use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Content;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Flags titles that are missing, truncated in the SERP, too thin to describe

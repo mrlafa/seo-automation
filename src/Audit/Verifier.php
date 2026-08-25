@@ -11,7 +11,9 @@ use SEOAgent\Database\IssueRepository;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\PageFetcher;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Closes the loop: after applying a fix, re-run the checker that raised the

@@ -13,7 +13,9 @@ use SEOAgent\Audit\TermChecker;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Category and product-category archives are frequently the highest-intent

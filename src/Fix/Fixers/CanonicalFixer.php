@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Writes a canonical URL, either correcting a malformed one or pointing a
@@ -54,12 +56,12 @@ final class CanonicalFixer extends AbstractFixer {
 		$canonical = trim( (string) ( $input['canonical'] ?? $payload['canonical'] ?? $payload['canonical_target'] ?? '' ) );
 
 		if ( '' === $canonical ) {
-			throw new FixException( 'No canonical URL supplied.', 'input_required', array( 'post_id' => $post_id ) );
+			throw new FixException( esc_html( 'No canonical URL supplied.' ), 'input_required', array( 'post_id' => $post_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 		}
 
 		if ( ! preg_match( '#^https?://#i', $canonical ) ) {
 			throw new FixException(
-				sprintf( '"%s" is not an absolute URL. Canonicals must include the scheme and host.', $canonical ),
+				esc_html( sprintf( '"%s" is not an absolute URL. Canonicals must include the scheme and host.', $canonical ) ),
 				'invalid_canonical'
 			);
 		}

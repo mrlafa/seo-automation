@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Excludes thin or empty archives from the index.
@@ -60,14 +62,14 @@ final class TermRobotsFixer extends AbstractFixer {
 
 		if ( ! in_array( $robots, self::ALLOWED, true ) ) {
 			throw new FixException(
-				sprintf( '"%s" is not a directive this fixer writes. Allowed: %s.', $robots, implode( ', ', self::ALLOWED ) ),
+				esc_html( sprintf( '"%s" is not a directive this fixer writes. Allowed: %s.', $robots, implode( ', ', self::ALLOWED ) ) ),
 				'invalid_directive'
 			);
 		}
 
 		if ( ! $seo->supports( SeoAdapterInterface::FIELD_ROBOTS ) ) {
 			throw new FixException(
-				sprintf( '%s does not expose a robots field for terms.', $seo->label() ),
+				esc_html( sprintf( '%s does not expose a robots field for terms.', $seo->label() ) ),
 				'unsupported_by_adapter'
 			);
 		}

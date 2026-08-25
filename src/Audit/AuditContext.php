@@ -11,7 +11,9 @@ use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Options;
 use SEOAgent\Support\PageFetcher;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Carries the audit's arguments, the SEO adapter, an HTTP fetcher and the

@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Changing a slug changes the URL, which breaks every existing link to the page
@@ -56,17 +58,17 @@ final class PostSlugFixer extends AbstractFixer {
 		$value = $this->value_from( $input, $issue );
 
 		if ( null === $value ) {
-			throw new FixException( 'No slug supplied.', 'input_required', array( 'post_id' => $post_id ) );
+			throw new FixException( esc_html( 'No slug supplied.' ), 'input_required', array( 'post_id' => $post_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 		}
 
 		$new_slug = sanitize_title( $value );
 
 		if ( '' === $new_slug ) {
-			throw new FixException( 'The supplied slug reduces to nothing after sanitisation.', 'invalid_slug' );
+			throw new FixException( esc_html( 'The supplied slug reduces to nothing after sanitisation.' ), 'invalid_slug' );
 		}
 
 		if ( $new_slug === $post->post_name ) {
-			throw new FixException( 'That is already the slug.', 'no_change' );
+			throw new FixException( esc_html( 'That is already the slug.' ), 'no_change' );
 		}
 
 		// The URL is a published contract with everyone who has linked to it.
@@ -74,15 +76,15 @@ final class PostSlugFixer extends AbstractFixer {
 		// this fixer will do silently.
 		if ( empty( $input['acknowledge_301'] ) ) {
 			throw new FixException(
-				sprintf(
+				esc_html( sprintf(
 					'Changing this slug will break %s. Set "acknowledge_301" to true to proceed, and add a 301 redirect from the old path to the new one.',
 					(string) get_permalink( $post )
-				),
+				) ),
 				'redirect_acknowledgement_required',
 				array(
-					'old_url'  => (string) get_permalink( $post ),
-					'old_slug' => (string) $post->post_name,
-					'new_slug' => $new_slug,
+					'old_url'  => (string) get_permalink( $post ), // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
+					'old_slug' => (string) $post->post_name, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
+					'new_slug' => $new_slug, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 				)
 			);
 		}

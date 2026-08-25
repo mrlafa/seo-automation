@@ -12,7 +12,9 @@ use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\PostChecker;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Checks the product fields that drive rich results and Merchant listings.

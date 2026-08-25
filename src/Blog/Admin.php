@@ -123,8 +123,13 @@ class Admin {
 			$product_url     = isset( $_POST['product_url'] ) ? esc_url_raw( wp_unslash( $_POST['product_url'] ) ) : '';
 			$product_title   = isset( $_POST['product_title'] ) ? sanitize_text_field( wp_unslash( $_POST['product_title'] ) ) : '';
 			$primary_keyword = isset( $_POST['primary_keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['primary_keyword'] ) ) : '';
-			$secondary_raw   = isset( $_POST['secondary_keywords'] ) ? wp_unslash( $_POST['secondary_keywords'] ) : '';
+			$secondary_raw   = isset( $_POST['secondary_keywords'] )
+				? sanitize_textarea_field( wp_unslash( $_POST['secondary_keywords'] ) )
+				: '';
 			$secondary       = $secondary_raw ? json_decode( $secondary_raw, true ) : array();
+			$secondary       = is_array( $secondary )
+				? array_values( array_filter( array_map( 'sanitize_text_field', $secondary ) ) )
+				: array();
 
 			if ( ! $product_id || ! $product_title ) {
 				wp_safe_redirect( add_query_arg( 'theblog_notice', 'product_not_analyzed', admin_url( 'admin.php?page=theblog-topics' ) ) );
@@ -244,11 +249,15 @@ class Admin {
 	 * ---------------------------------------------------------------- */
 
 	public static function render_notices() {
-		if ( empty( $_GET['theblog_notice'] ) || empty( $_GET['page'] ) || strpos( $_GET['page'], 'theblog' ) !== 0 ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only screen state (filters, paging, notice text). No action is taken and nothing is written, so a nonce would serve no purpose; each value is still sanitised.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+
+		if ( empty( $_GET['theblog_notice'] ) || 0 !== strpos( $page, 'theblog' ) ) {
 			return;
 		}
 
 		$notice = sanitize_text_field( wp_unslash( $_GET['theblog_notice'] ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$messages = array(
 			'topic_added'          => array( 'success', __( 'Added to the queue.', 'seo-automation' ) ),

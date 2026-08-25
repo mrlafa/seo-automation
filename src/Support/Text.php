@@ -10,7 +10,9 @@
 
 namespace SEOAgent\Support;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * String analysis helpers.

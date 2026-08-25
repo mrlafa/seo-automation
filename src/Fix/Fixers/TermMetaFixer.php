@@ -14,7 +14,9 @@ use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Options;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Term title and description fixer.
@@ -56,7 +58,7 @@ final class TermMetaFixer extends AbstractFixer {
 
 		if ( ! in_array( $field, array( SeoAdapterInterface::FIELD_TITLE, SeoAdapterInterface::FIELD_DESCRIPTION ), true ) ) {
 			throw new FixException(
-				sprintf( 'Field "%s" is not one this fixer handles.', $field ),
+				esc_html( sprintf( 'Field "%s" is not one this fixer handles.', $field ) ),
 				'unsupported_field'
 			);
 		}
@@ -65,9 +67,9 @@ final class TermMetaFixer extends AbstractFixer {
 
 		if ( null === $value ) {
 			throw new FixException(
-				sprintf( 'No %s supplied for the "%s" archive.', $field, $term->name ),
+				esc_html( sprintf( 'No %s supplied for the "%s" archive.', $field, $term->name ) ),
 				'input_required',
-				array( 'term_id' => $term_id )
+				array( 'term_id' => $term_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
@@ -79,7 +81,7 @@ final class TermMetaFixer extends AbstractFixer {
 
 		if ( Text::length( $value ) > $limit * 1.5 ) {
 			throw new FixException(
-				sprintf( 'The supplied %1$s is %2$d characters against a %3$d-character target.', $field, Text::length( $value ), $limit ),
+				esc_html( sprintf( 'The supplied %1$s is %2$d characters against a %3$d-character target.', $field, Text::length( $value ), $limit ) ),
 				'value_too_long'
 			);
 		}

@@ -13,7 +13,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\LlmsTxt;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Stores the llms.txt body in an option; the plugin serves it at /llms.txt.
@@ -58,13 +60,13 @@ final class LlmsTxtFixer extends AbstractFixer {
 		}
 
 		if ( strlen( $content ) > 200000 ) {
-			throw new FixException( 'The llms.txt body is implausibly large.', 'value_too_long' );
+			throw new FixException( esc_html( 'The llms.txt body is implausibly large.' ), 'value_too_long' );
 		}
 
 		$before = (string) get_option( LlmsTxt::OPTION, '' );
 
 		if ( $before === $content ) {
-			throw new FixException( 'That is already the published llms.txt.', 'no_change' );
+			throw new FixException( esc_html( 'That is already the published llms.txt.' ), 'no_change' );
 		}
 
 		return array(

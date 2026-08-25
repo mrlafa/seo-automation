@@ -8,7 +8,9 @@
 
 namespace SEOAgent\Seo;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Every checker and fixer talks to metadata through this interface, so

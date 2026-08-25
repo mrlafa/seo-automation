@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Flips `blog_public` back on.
@@ -53,16 +55,16 @@ final class SiteVisibilityFixer extends AbstractFixer {
 	public function plan( array $issue, array $input, SeoAdapterInterface $seo ): array {
 		if ( empty( $input['confirm_production'] ) ) {
 			throw new FixException(
-				'Indexing is switched off deliberately on staging sites. Set "confirm_production" to true if this is the live site.',
+				esc_html( 'Indexing is switched off deliberately on staging sites. Set "confirm_production" to true if this is the live site.' ),
 				'confirmation_required',
-				array( 'site_url' => home_url( '/' ) )
+				array( 'site_url' => home_url( '/' ) ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
 		$before = (string) get_option( 'blog_public' );
 
 		if ( '1' === $before ) {
-			throw new FixException( 'Indexing is already enabled.', 'no_change' );
+			throw new FixException( esc_html( 'Indexing is already enabled.' ), 'no_change' );
 		}
 
 		return array(

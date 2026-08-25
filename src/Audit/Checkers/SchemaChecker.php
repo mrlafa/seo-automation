@@ -13,7 +13,9 @@ use SEOAgent\Audit\CheckerResult;
 use SEOAgent\Audit\Issue;
 use SEOAgent\Support\Html;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Structured data can only be judged from the rendered page, because it is
@@ -110,7 +112,6 @@ final class SchemaChecker extends AbstractChecker {
 					'orderby'          => 'ID',
 					'order'            => 'DESC',
 					'no_found_rows'    => true,
-					'suppress_filters' => true,
 				)
 			);
 
