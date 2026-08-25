@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Replaces the text inside specific anchors, leaving the href and every
@@ -55,9 +57,9 @@ final class AnchorTextFixer extends AbstractFixer {
 
 		if ( empty( $anchors ) ) {
 			throw new FixException(
-				'Pass "anchors" describing what each link should say instead.',
+				esc_html( 'Pass "anchors" describing what each link should say instead.' ),
 				'input_required',
-				array( 'links' => $payload['links'] ?? array() )
+				array( 'links' => $payload['links'] ?? array() ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
@@ -98,7 +100,7 @@ final class AnchorTextFixer extends AbstractFixer {
 
 		if ( 0 === $applied ) {
 			throw new FixException(
-				'None of the supplied anchors matched a link in this page.',
+				esc_html( 'None of the supplied anchors matched a link in this page.' ),
 				'no_match'
 			);
 		}

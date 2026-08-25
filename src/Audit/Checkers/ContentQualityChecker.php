@@ -13,7 +13,9 @@ use SEOAgent\Audit\PostChecker;
 use SEOAgent\Support\Content;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Flags indexable pages that are too thin to rank and pages that have gone

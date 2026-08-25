@@ -8,7 +8,9 @@
  * @package SEOAgent
  */
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 spl_autoload_register(
 	static function ( $class ) {

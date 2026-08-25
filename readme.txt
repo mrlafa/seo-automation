@@ -131,6 +131,10 @@ No. WooCommerce-specific checks and the product-to-article feature activate only
 * Added the missing `License` and `License URI` plugin headers.
 * Removed a duplicate textdomain load that left part of the plugin untranslated.
 * Merged the former TheBlog Automation and SEO Agent plugins into one codebase with a single admin menu, one bootstrap file, and one autoloader.
+* Hardened output escaping on every exception message, and escaped a post thumbnail that was rendered unfiltered in the review queue.
+* Sanitised remaining request and server input at the point of read, including the llms.txt request path and the admin notice parameters.
+* Rewrote direct-file-access guards into the canonical form so every file is recognised as protected.
+* Removed a redundant suppress_filters argument and an unnecessary load_plugin_textdomain() call.
 
 == Upgrade Notice ==
 

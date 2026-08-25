@@ -46,24 +46,24 @@ class Pipeline {
 	protected static function run_topic_pipeline( $topic_id ) {
 		$keyword = get_the_title( $topic_id );
 		if ( ! $keyword ) {
-			throw new \Exception( __( 'Topic not found.', 'seo-automation' ) );
+			throw new \Exception( esc_html__( 'Topic not found.', 'seo-automation' ) );
 		}
 
 		Logger::info( "Pipeline started for topic #{$topic_id}: {$keyword}" );
 
 		$brief = Research::run( $keyword );
 		if ( is_wp_error( $brief ) ) {
-			throw new \Exception( 'Research failed: ' . $brief->get_error_message() );
+			throw new \Exception( esc_html( 'Research failed: ' . $brief->get_error_message() ));
 		}
 
 		$draft = Writer::run( $keyword, $brief );
 		if ( is_wp_error( $draft ) ) {
-			throw new \Exception( 'Writing failed: ' . $draft->get_error_message() );
+			throw new \Exception( esc_html( 'Writing failed: ' . $draft->get_error_message() ));
 		}
 
 		$seo = SEO_Optimizer::run( $keyword, $draft, $brief );
 		if ( is_wp_error( $seo ) ) {
-			throw new \Exception( 'SEO optimization failed: ' . $seo->get_error_message() );
+			throw new \Exception( esc_html( 'SEO optimization failed: ' . $seo->get_error_message() ));
 		}
 
 		$content = Internal_Linking::run( $draft['content_html'], $keyword );
@@ -80,22 +80,22 @@ class Pipeline {
 	 */
 	protected static function run_product_pipeline( $topic_id ) {
 		if ( ! WooCommerce::is_active() ) {
-			throw new \Exception( __( 'WooCommerce is not active on this site.', 'seo-automation' ) );
+			throw new \Exception( esc_html__( 'WooCommerce is not active on this site.', 'seo-automation' ) );
 		}
 
 		$product_id = (int) get_post_meta( $topic_id, '_theblog_product_id', true );
 		$product_post = $product_id ? get_post( $product_id ) : null;
 
 		if ( ! $product_post || 'product' !== $product_post->post_type ) {
-			throw new \Exception( __( 'The linked WooCommerce product could not be found.', 'seo-automation' ) );
+			throw new \Exception( esc_html__( 'The linked WooCommerce product could not be found.', 'seo-automation' ) );
 		}
 		if ( 'trash' === $product_post->post_status ) {
-			throw new \Exception( __( 'This product has been deleted. Remove this queue entry.', 'seo-automation' ) );
+			throw new \Exception( esc_html__( 'This product has been deleted. Remove this queue entry.', 'seo-automation' ) );
 		}
 
 		$wc_product = wc_get_product( $product_id );
 		if ( ! $wc_product ) {
-			throw new \Exception( __( 'This product could not be loaded.', 'seo-automation' ) );
+			throw new \Exception( esc_html__( 'This product could not be loaded.', 'seo-automation' ) );
 		}
 
 		$product = WooCommerce::extract_product_data( $wc_product );
@@ -103,12 +103,12 @@ class Pipeline {
 		Logger::info( "Pipeline started for topic #{$topic_id}: product #{$product_id} ({$product['title']})" );
 
 		if ( '' === trim( $product['long_description'] ) ) {
-			throw new \Exception( __( 'Product found, but the long description is empty. Add a long description before generating SEO content.', 'seo-automation' ) );
+			throw new \Exception( esc_html__( 'Product found, but the long description is empty. Add a long description before generating SEO content.', 'seo-automation' ) );
 		}
 
 		$brief = Product_Analysis::run( $product );
 		if ( is_wp_error( $brief ) ) {
-			throw new \Exception( 'Product analysis failed: ' . $brief->get_error_message() );
+			throw new \Exception( esc_html( 'Product analysis failed: ' . $brief->get_error_message() ));
 		}
 
 		// The user saw (and could edit) the keyword suggested at "Analyze
@@ -147,14 +147,14 @@ class Pipeline {
 
 		$draft = Writer::run( $product['title'], $brief, $grounding_text, $word_range, $want_faqs );
 		if ( is_wp_error( $draft ) ) {
-			throw new \Exception( 'Writing failed: ' . $draft->get_error_message() );
+			throw new \Exception( esc_html( 'Writing failed: ' . $draft->get_error_message() ));
 		}
 
 		$primary_keyword = $brief['primary_keyword'];
 
 		$seo = SEO_Optimizer::run( $primary_keyword, $draft, $brief, $want_alt ? $product['images'] : array() );
 		if ( is_wp_error( $seo ) ) {
-			throw new \Exception( 'SEO optimization failed: ' . $seo->get_error_message() );
+			throw new \Exception( esc_html( 'SEO optimization failed: ' . $seo->get_error_message() ));
 		}
 
 		$content = $draft['content_html'];
@@ -202,7 +202,7 @@ class Pipeline {
 
 		$post_id = wp_insert_post( $post_data, true );
 		if ( is_wp_error( $post_id ) ) {
-			throw new \Exception( 'Could not create post: ' . $post_id->get_error_message() );
+			throw new \Exception( esc_html( 'Could not create post: ' . $post_id->get_error_message() ));
 		}
 
 		update_post_meta( $post_id, '_theblog_generated', 1 );

@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Support;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Bridges the gap between what is stored in post_content and what is on the

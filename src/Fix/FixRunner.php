@@ -13,7 +13,9 @@ use SEOAgent\Database\IssueRepository;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Options;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * The only place in the plugin that writes on behalf of an issue.

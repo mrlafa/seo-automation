@@ -11,7 +11,9 @@ use SEOAgent\Audit\AuditContext;
 use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\SiteChecker;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * The checks that can render every other finding irrelevant: if the site tells

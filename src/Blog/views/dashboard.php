@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.WP.GlobalVariablesOverride.Prohibited -- This template is include()d from inside a class method, so the variables below are function-scoped locals, not globals.
+
 $settings   = Settings::all();
 $topics     = CPT_Topic::get_all( 200 );
 $counts     = array_fill_keys( array_keys( CPT_Topic::statuses() ), 0 );

@@ -27,7 +27,9 @@ use SEOAgent\Audit\Checkers\SchemaChecker;
 use SEOAgent\Audit\Checkers\SitemapChecker;
 use SEOAgent\Audit\Checkers\UrlStructureChecker;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Ordered collection of checkers, addressable by slug.

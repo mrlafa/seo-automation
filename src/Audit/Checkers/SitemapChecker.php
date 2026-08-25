@@ -11,7 +11,9 @@ use SEOAgent\Audit\AuditContext;
 use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\SiteChecker;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Locates the sitemap, confirms it works, and looks for the contradiction that

@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Rewrites the second and subsequent `<h1>` in a page's content to `<h2>`,
@@ -54,7 +56,7 @@ final class HeadingLevelFixer extends AbstractFixer {
 		$targets = (array) ( $issue['fix_payload']['demote'] ?? array() );
 
 		if ( empty( $targets ) ) {
-			throw new FixException( 'This issue lists no headings to demote.', 'no_target' );
+			throw new FixException( esc_html( 'This issue lists no headings to demote.' ), 'no_target' );
 		}
 
 		$content = (string) $post->post_content;
@@ -83,7 +85,7 @@ final class HeadingLevelFixer extends AbstractFixer {
 
 		if ( 0 === $count ) {
 			throw new FixException(
-				'None of the recorded headings are still present — the page has been edited since the audit. Re-run the audit and try again.',
+				esc_html( 'None of the recorded headings are still present — the page has been edited since the audit. Re-run the audit and try again.' ),
 				'stale_issue'
 			);
 		}

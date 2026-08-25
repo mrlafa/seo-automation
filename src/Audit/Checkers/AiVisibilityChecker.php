@@ -12,7 +12,9 @@ use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\SiteChecker;
 use SEOAgent\Support\Html;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Checks the things that determine whether an answer engine can find, trust

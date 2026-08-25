@@ -13,7 +13,9 @@ use SEOAgent\Seo\Adapters\SeoPressAdapter;
 use SEOAgent\Seo\Adapters\YoastAdapter;
 use SEOAgent\Support\Options;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Detection in priority order, with a settings and filter override.

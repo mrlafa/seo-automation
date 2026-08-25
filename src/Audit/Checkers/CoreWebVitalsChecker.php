@@ -13,7 +13,9 @@ use SEOAgent\Audit\SiteChecker;
 use SEOAgent\Support\Html;
 use SEOAgent\Support\Options;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Two modes.

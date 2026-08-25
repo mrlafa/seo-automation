@@ -25,7 +25,9 @@ use SEOAgent\Fix\Fixers\TermCopyFixer;
 use SEOAgent\Fix\Fixers\TermMetaFixer;
 use SEOAgent\Fix\Fixers\TermRobotsFixer;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Fixers addressable by slug.

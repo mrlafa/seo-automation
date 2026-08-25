@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.WP.GlobalVariablesOverride.Prohibited -- This template is include()d from inside a class method, so the variables below are function-scoped locals, not globals.
+
 $posts = Review_Queue::get_pending_posts( 50 );
 ?>
 <div class="wrap theblog-wrap">
@@ -35,7 +37,15 @@ $posts = Review_Queue::get_pending_posts( 50 );
 		$thumbnail      = get_the_post_thumbnail( $post->ID, array( 80, 80 ) );
 		?>
 		<div class="theblog-panel theblog-review-item">
-			<div class="theblog-review-thumb"><?php echo $thumbnail ? $thumbnail : '<div class="theblog-review-thumb-placeholder"></div>'; ?></div>
+			<div class="theblog-review-thumb">
+				<?php
+				// $thumbnail is an <img> tag from core; wp_kses_post keeps the
+				// markup while stripping anything a filter may have injected.
+				echo $thumbnail
+					? wp_kses_post( $thumbnail )
+					: '<div class="theblog-review-thumb-placeholder"></div>';
+				?>
+			</div>
 			<div class="theblog-review-body">
 				<h2><a href="<?php echo esc_url( get_edit_post_link( $post->ID ) ); ?>"><?php echo esc_html( get_the_title( $post ) ); ?></a></h2>
 				<p><?php echo esc_html( wp_trim_words( wp_strip_all_tags( $post->post_content ), 40 ) ); ?></p>
@@ -50,7 +60,17 @@ $posts = Review_Queue::get_pending_posts( 50 );
 
 				<?php if ( ! empty( $faqs ) && is_array( $faqs ) ) : ?>
 					<details class="theblog-faq-details">
-						<summary><?php echo esc_html( sprintf( _n( '%d FAQ generated', '%d FAQs generated', count( $faqs ), 'seo-automation' ), count( $faqs ) ) ); ?></summary>
+						<summary>
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %d: number of FAQ entries generated for this post. */
+									_n( '%d FAQ generated', '%d FAQs generated', count( $faqs ), 'seo-automation' ),
+									count( $faqs )
+								)
+							);
+							?>
+						</summary>
 						<ul>
 							<?php foreach ( $faqs as $faq ) : ?>
 								<li><strong><?php echo esc_html( $faq['question'] ); ?></strong><br><?php echo esc_html( $faq['answer'] ); ?></li>

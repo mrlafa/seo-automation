@@ -13,7 +13,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * The term description is the visible introduction on a category page, as
@@ -56,9 +58,9 @@ final class TermCopyFixer extends AbstractFixer {
 
 		if ( null === $value ) {
 			throw new FixException(
-				sprintf( 'No copy supplied for the "%s" archive.', $term->name ),
+				esc_html( sprintf( 'No copy supplied for the "%s" archive.', $term->name ) ),
 				'input_required',
-				array( 'term_id' => $term_id )
+				array( 'term_id' => $term_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
@@ -66,9 +68,9 @@ final class TermCopyFixer extends AbstractFixer {
 
 		if ( Text::word_count( $value ) < 20 ) {
 			throw new FixException(
-				'Archive copy under 20 words does not do the job the missing-copy issue was raised for.',
+				esc_html( 'Archive copy under 20 words does not do the job the missing-copy issue was raised for.' ),
 				'value_too_short',
-				array( 'word_count' => Text::word_count( $value ) )
+				array( 'word_count' => Text::word_count( $value ) ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 

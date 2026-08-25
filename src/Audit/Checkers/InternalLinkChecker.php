@@ -15,7 +15,9 @@ use SEOAgent\Audit\ObjectIterator;
 use SEOAgent\Support\Html;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Two-phase checker: first walk every page recording its outbound internal
@@ -456,7 +458,6 @@ final class InternalLinkChecker extends AbstractChecker {
 				'numberposts'    => 2000,
 				'fields'         => 'ids',
 				'no_found_rows'  => true,
-				'suppress_filters' => true,
 			)
 		);
 

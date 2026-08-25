@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Support;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Fetches URLs with a short-lived cache so several checkers can inspect the

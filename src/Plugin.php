@@ -25,7 +25,9 @@ use SEOAgent\Seo\SchemaRenderer;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Options;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Main plugin class. Wires services together and registers WordPress hooks.

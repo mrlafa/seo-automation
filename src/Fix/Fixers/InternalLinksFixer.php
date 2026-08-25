@@ -12,7 +12,9 @@ use SEOAgent\Fix\FixChange;
 use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Links an existing phrase in the content to another page.
@@ -55,11 +57,11 @@ final class InternalLinksFixer extends AbstractFixer {
 
 		if ( empty( $links ) ) {
 			throw new FixException(
-				'Pass "links" describing which phrase in which page should link where.',
+				esc_html( 'Pass "links" describing which phrase in which page should link where.' ),
 				'input_required',
 				array(
-					'target_post_id' => $issue['fix_payload']['target_post_id'] ?? null,
-					'post_id'        => $issue['fix_payload']['post_id'] ?? $issue['object_id'] ?? null,
+					'target_post_id' => $issue['fix_payload']['target_post_id'] ?? null, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
+					'post_id'        => $issue['fix_payload']['post_id'] ?? $issue['object_id'] ?? null, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 				)
 			);
 		}
@@ -76,7 +78,7 @@ final class InternalLinksFixer extends AbstractFixer {
 		}
 
 		if ( empty( $by_source ) ) {
-			throw new FixException( 'No usable source page in the supplied links.', 'no_target' );
+			throw new FixException( esc_html( 'No usable source page in the supplied links.' ), 'no_target' );
 		}
 
 		$changes = array();
@@ -96,14 +98,14 @@ final class InternalLinksFixer extends AbstractFixer {
 				}
 
 				if ( $target_id === $source_id ) {
-					throw new FixException( 'A page cannot link to itself.', 'self_link' );
+					throw new FixException( esc_html( 'A page cannot link to itself.' ), 'self_link' );
 				}
 
 				$target_url = (string) get_permalink( $target_id );
 
 				if ( '' === $target_url ) {
 					throw new FixException(
-						sprintf( 'Target post %d has no permalink.', $target_id ),
+						esc_html( sprintf( 'Target post %d has no permalink.', $target_id ) ),
 						'target_missing'
 					);
 				}
@@ -112,11 +114,11 @@ final class InternalLinksFixer extends AbstractFixer {
 
 				if ( null === $result ) {
 					throw new FixException(
-						sprintf( 'The phrase "%1$s" was not found as unlinked text in "%2$s".', $phrase, $post->post_title ),
+						esc_html( sprintf( 'The phrase "%1$s" was not found as unlinked text in "%2$s".', $phrase, $post->post_title ) ),
 						'phrase_not_found',
 						array(
-							'source_post_id' => $source_id,
-							'phrase'         => $phrase,
+							'source_post_id' => $source_id, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
+							'phrase'         => $phrase, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 						)
 					);
 				}
@@ -145,7 +147,7 @@ final class InternalLinksFixer extends AbstractFixer {
 		}
 
 		if ( empty( $changes ) ) {
-			throw new FixException( 'Nothing was changed.', 'no_change' );
+			throw new FixException( esc_html( 'Nothing was changed.' ), 'no_change' );
 		}
 
 		return $changes;
