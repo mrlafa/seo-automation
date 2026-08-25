@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Audit;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Runs once per audit against the site as a whole.

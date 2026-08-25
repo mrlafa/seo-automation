@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Audit;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Immutable-ish value object describing one SEO problem.

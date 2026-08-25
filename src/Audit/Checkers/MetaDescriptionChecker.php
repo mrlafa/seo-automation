@@ -14,7 +14,9 @@ use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Content;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Flags pages with no description, or one that is truncated, thin, or

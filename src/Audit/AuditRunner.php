@@ -12,7 +12,9 @@ use SEOAgent\Database\IssueRepository;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\PageFetcher;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Orchestrates checkers, persists findings and computes the health score.

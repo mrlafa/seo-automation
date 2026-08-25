@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Database;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Creates and upgrades the plugin's tables via dbDelta.

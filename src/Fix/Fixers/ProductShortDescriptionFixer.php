@@ -13,7 +13,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * WooCommerce stores the short description in `post_excerpt`.
@@ -53,7 +55,7 @@ final class ProductShortDescriptionFixer extends AbstractFixer {
 
 		if ( 'product' !== $post->post_type ) {
 			throw new FixException(
-				sprintf( 'Post %d is not a product.', $product_id ),
+				esc_html( sprintf( 'Post %d is not a product.', $product_id ) ),
 				'not_a_product'
 			);
 		}
@@ -62,9 +64,9 @@ final class ProductShortDescriptionFixer extends AbstractFixer {
 
 		if ( null === $value ) {
 			throw new FixException(
-				sprintf( 'No short description supplied for "%s".', $post->post_title ),
+				esc_html( sprintf( 'No short description supplied for "%s".', $post->post_title ) ),
 				'input_required',
-				array( 'product_id' => $product_id )
+				array( 'product_id' => $product_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
@@ -72,7 +74,7 @@ final class ProductShortDescriptionFixer extends AbstractFixer {
 
 		if ( Text::word_count( $value ) < 10 ) {
 			throw new FixException(
-				'A short description under 10 words does not replace the missing one meaningfully.',
+				esc_html( 'A short description under 10 words does not replace the missing one meaningfully.' ),
 				'value_too_short'
 			);
 		}

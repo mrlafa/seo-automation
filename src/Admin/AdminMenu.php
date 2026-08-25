@@ -11,7 +11,9 @@ use SEOAgent\Blog\Admin as BlogAdmin;
 use SEOAgent\Plugin;
 use SEOAgent\Support\Options;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Registers the SEO Automation menu and renders its screens.
@@ -137,12 +139,12 @@ class AdminMenu {
 
 			case 'apply_fix':
 				$issue_id = isset( $_POST['issue_id'] ) ? (int) $_POST['issue_id'] : 0;
-				$value    = isset( $_POST['value'] ) ? wp_unslash( $_POST['value'] ) : '';
+				$value    = isset( $_POST['value'] ) ? sanitize_textarea_field( wp_unslash( $_POST['value'] ) ) : '';
 
 				$input = array( 'approved' => true );
 
-				if ( '' !== trim( (string) $value ) ) {
-					$input['value'] = sanitize_textarea_field( (string) $value );
+				if ( '' !== trim( $value ) ) {
+					$input['value'] = $value;
 				}
 
 				$result = $this->plugin->fix_runner()->apply( $issue_id, $input );
@@ -198,8 +200,14 @@ class AdminMenu {
 
 	/**
 	 * Persist the settings form.
+	 *
+	 * Only ever reached from handle_action(), which has already run both
+	 * check_admin_referer() and the capability check for this request. The
+	 * nonce sniff cannot follow that call, hence the scoped exemption below;
+	 * every value read here is still individually sanitised.
 	 */
 	private function save_settings(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce and capability are verified in handle_action() before this method is called.
 		$updates = array();
 
 		$integers = array(
@@ -215,7 +223,7 @@ class AdminMenu {
 
 		foreach ( $integers as $key ) {
 			if ( isset( $_POST[ $key ] ) ) {
-				$updates[ $key ] = max( 0, (int) wp_unslash( $_POST[ $key ] ) );
+				$updates[ $key ] = absint( wp_unslash( $_POST[ $key ] ) );
 			}
 		}
 
@@ -255,6 +263,8 @@ class AdminMenu {
 			);
 		}
 
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
 		Options::update( $updates );
 	}
 
@@ -293,10 +303,11 @@ class AdminMenu {
 	 * Issues screen.
 	 */
 	public function render_issues(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only screen state (filters, paging, notice text). No action is taken and nothing is written, so a nonce would serve no purpose; each value is still sanitised.
 		$filters = array(
 			'status'   => array( isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : 'open' ),
 			'per_page' => 50,
-			'page'     => isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1,
+			'page'     => isset( $_GET['paged'] ) ? max( 1, absint( wp_unslash( $_GET['paged'] ) ) ) : 1,
 			'orderby'  => 'impact',
 		);
 
@@ -309,6 +320,7 @@ class AdminMenu {
 		if ( ! empty( $_GET['s'] ) ) {
 			$filters['search'] = sanitize_text_field( wp_unslash( $_GET['s'] ) );
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		$result   = $this->plugin->issues()->query( $filters );
 		$checkers = $this->plugin->checkers()->all();
@@ -347,11 +359,14 @@ class AdminMenu {
 	 * Render the admin notice carried through the redirect.
 	 */
 	public static function notice(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only screen state (filters, paging, notice text). No action is taken and nothing is written, so a nonce would serve no purpose; each value is still sanitised.
 		if ( empty( $_GET['seo_agent_notice'] ) ) {
 			return;
 		}
 
-		$notice = sanitize_text_field( rawurldecode( wp_unslash( $_GET['seo_agent_notice'] ) ) );
+		$notice = sanitize_text_field( wp_unslash( $_GET['seo_agent_notice'] ) );
+		$notice = sanitize_text_field( rawurldecode( $notice ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		if ( '' === $notice ) {
 			return;

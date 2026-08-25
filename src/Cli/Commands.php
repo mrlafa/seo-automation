@@ -11,7 +11,9 @@ use SEOAgent\Plugin;
 use SEOAgent\Support\Options;
 use WP_CLI;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * `wp seo-agent <command>`.

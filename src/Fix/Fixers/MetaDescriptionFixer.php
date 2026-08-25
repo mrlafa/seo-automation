@@ -10,7 +10,9 @@ namespace SEOAgent\Fix\Fixers;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Options;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Description fixer.

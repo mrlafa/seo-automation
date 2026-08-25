@@ -14,7 +14,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Saves question and answer pairs that the schema renderer turns into FAQPage
@@ -97,7 +99,7 @@ final class FaqSchemaFixer extends AbstractFixer {
 
 		if ( count( $clean ) < 2 ) {
 			throw new FixException(
-				'Fewer than two question and answer pairs could be verified against the visible page content.',
+				esc_html( 'Fewer than two question and answer pairs could be verified against the visible page content.' ),
 				'insufficient_pairs',
 				array( 'verified' => count( $clean ) )
 			);

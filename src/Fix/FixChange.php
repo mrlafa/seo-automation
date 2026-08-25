@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Fix;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * The unit of both application and rollback.

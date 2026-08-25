@@ -11,7 +11,9 @@ namespace SEOAgent\Seo\Adapters;
 
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Owns the metadata itself when nothing else does.

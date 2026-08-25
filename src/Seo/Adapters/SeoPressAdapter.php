@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Seo\Adapters;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Reads and writes SEOPress post/term meta.

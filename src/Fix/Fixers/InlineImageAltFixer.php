@@ -13,7 +13,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Html;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * For images that are not in the media library, the alt has to live in the
@@ -56,9 +58,9 @@ final class InlineImageAltFixer extends AbstractFixer {
 
 		if ( empty( $alts ) ) {
 			throw new FixException(
-				'Pass "alts" as a map of image src to alt text. Nothing is guessed here — the alt has to describe what is in the picture.',
+				esc_html( 'Pass "alts" as a map of image src to alt text. Nothing is guessed here — the alt has to describe what is in the picture.' ),
 				'input_required',
-				array( 'sources' => $issue['evidence']['sources'] ?? array() )
+				array( 'sources' => $issue['evidence']['sources'] ?? array() ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
@@ -99,9 +101,9 @@ final class InlineImageAltFixer extends AbstractFixer {
 
 		if ( empty( $applied ) ) {
 			throw new FixException(
-				'None of the supplied sources matched an image in this page.',
+				esc_html( 'None of the supplied sources matched an image in this page.' ),
 				'no_match',
-				array( 'supplied' => array_keys( $alts ) )
+				array( 'supplied' => array_keys( $alts ) ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 

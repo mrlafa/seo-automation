@@ -9,7 +9,9 @@ namespace SEOAgent\Seo;
 
 use SEOAgent\Audit\Checkers\FaqChecker;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Outputs the FAQPage JSON-LD assembled by the FAQ fixer.

@@ -209,8 +209,6 @@ function seo_automation_run() {
 		return;
 	}
 
-	load_plugin_textdomain( 'seo-automation', false, dirname( SEO_AUTOMATION_BASENAME ) . '/languages' );
-
 	// Content generation engine.
 	if ( class_exists( 'SEOAgent\\Blog\\CPT_Topic' ) ) {
 		\SEOAgent\Blog\CPT_Topic::init();

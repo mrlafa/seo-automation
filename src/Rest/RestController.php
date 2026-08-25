@@ -13,7 +13,9 @@ use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Options;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Routes under `seo-agent/v1`.

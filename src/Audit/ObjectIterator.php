@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Audit;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Keyset pagination over IDs.
@@ -43,7 +45,7 @@ final class ObjectIterator {
 
 		$params = array_merge( $post_types, $statuses, array( $after_id, $limit ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$sql = $wpdb->prepare(
 			"SELECT ID FROM {$wpdb->posts}
 			 WHERE post_type IN ({$type_placeholders})
@@ -53,8 +55,11 @@ final class ObjectIterator {
 			 LIMIT %d",
 			$params
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		return array_map( 'intval', (array) $wpdb->get_col( $sql ) );
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 	}
 
 	/**
@@ -76,14 +81,17 @@ final class ObjectIterator {
 		$type_placeholders   = implode( ',', array_fill( 0, count( $post_types ), '%s' ) );
 		$status_placeholders = implode( ',', array_fill( 0, count( $statuses ), '%s' ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$sql = $wpdb->prepare(
 			"SELECT COUNT(*) FROM {$wpdb->posts}
 			 WHERE post_type IN ({$type_placeholders}) AND post_status IN ({$status_placeholders})",
 			array_merge( $post_types, $statuses )
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		return (int) $wpdb->get_var( $sql );
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 	}
 
 	/**
@@ -106,7 +114,7 @@ final class ObjectIterator {
 		$placeholders = implode( ',', array_fill( 0, count( $taxonomies ), '%s' ) );
 		$params       = array_merge( $taxonomies, array( $after_id, $limit ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$sql = $wpdb->prepare(
 			"SELECT t.term_id FROM {$wpdb->terms} t
 			 INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id
@@ -116,8 +124,11 @@ final class ObjectIterator {
 			 LIMIT %d",
 			$params
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		return array_map( 'intval', (array) $wpdb->get_col( $sql ) );
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 	}
 
 	/**
@@ -135,12 +146,15 @@ final class ObjectIterator {
 
 		$placeholders = implode( ',', array_fill( 0, count( $taxonomies ), '%s' ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$sql = $wpdb->prepare(
 			"SELECT COUNT(*) FROM {$wpdb->term_taxonomy} WHERE taxonomy IN ({$placeholders})",
 			$taxonomies
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		return (int) $wpdb->get_var( $sql );
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 	}
 }

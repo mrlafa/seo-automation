@@ -11,7 +11,9 @@ use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Content;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Implements the common case: fields stored in postmeta/termmeta, titles

@@ -13,7 +13,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Sets `_wp_attachment_image_alt`, which is where WordPress reads alt from for
@@ -53,12 +55,12 @@ final class ImageAltFixer extends AbstractFixer {
 		$attachment_id = (int) ( $issue['fix_payload']['attachment_id'] ?? $issue['object_id'] ?? 0 );
 
 		if ( $attachment_id <= 0 ) {
-			throw new FixException( 'This issue names no image.', 'no_target' );
+			throw new FixException( esc_html( 'This issue names no image.' ), 'no_target' );
 		}
 
 		if ( 'attachment' !== get_post_type( $attachment_id ) ) {
 			throw new FixException(
-				sprintf( 'Post %d is not an attachment.', $attachment_id ),
+				esc_html( sprintf( 'Post %d is not an attachment.', $attachment_id ) ),
 				'not_an_attachment'
 			);
 		}
@@ -67,9 +69,9 @@ final class ImageAltFixer extends AbstractFixer {
 
 		if ( null === $value ) {
 			throw new FixException(
-				'No alt text supplied, and this image carries no caption or title to fall back on.',
+				esc_html( 'No alt text supplied, and this image carries no caption or title to fall back on.' ),
 				'input_required',
-				array( 'attachment_id' => $attachment_id )
+				array( 'attachment_id' => $attachment_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 

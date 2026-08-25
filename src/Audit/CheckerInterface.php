@@ -7,7 +7,9 @@
 
 namespace SEOAgent\Audit;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * A checker inspects one aspect of the site and returns findings.

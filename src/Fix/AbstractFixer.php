@@ -9,7 +9,9 @@ namespace SEOAgent\Fix;
 
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Implements write() once, for every storage location a fix can target.
@@ -66,9 +68,9 @@ abstract class AbstractFixer implements FixerInterface {
 
 			default:
 				throw new FixException(
-					sprintf( 'Unknown field scope "%s".', $scope ),
+					esc_html( sprintf( 'Unknown field scope "%s".', $scope ) ),
 					'unknown_field_scope',
-					array( 'field' => $change->field )
+					array( 'field' => $change->field ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 				);
 		}
 	}
@@ -84,7 +86,7 @@ abstract class AbstractFixer implements FixerInterface {
 
 		if ( ! in_array( $column, $allowed, true ) ) {
 			throw new FixException(
-				sprintf( 'Column "%s" is not writable.', $column ),
+				esc_html( sprintf( 'Column "%s" is not writable.', $column ) ),
 				'column_not_writable'
 			);
 		}
@@ -98,7 +100,7 @@ abstract class AbstractFixer implements FixerInterface {
 		);
 
 		if ( is_wp_error( $result ) ) {
-			throw new FixException( $result->get_error_message(), 'post_update_failed' );
+			throw new FixException( esc_html( $result->get_error_message() ), 'post_update_failed' );
 		}
 
 		return true;
@@ -138,7 +140,7 @@ abstract class AbstractFixer implements FixerInterface {
 
 		if ( ! in_array( $field, $allowed, true ) ) {
 			throw new FixException(
-				sprintf( 'Term field "%s" is not writable.', $field ),
+				esc_html( sprintf( 'Term field "%s" is not writable.', $field ) ),
 				'field_not_writable'
 			);
 		}
@@ -146,13 +148,13 @@ abstract class AbstractFixer implements FixerInterface {
 		$term = get_term( $change->object_id );
 
 		if ( ! $term || is_wp_error( $term ) ) {
-			throw new FixException( 'Term not found.', 'term_missing' );
+			throw new FixException( esc_html( 'Term not found.' ), 'term_missing' );
 		}
 
 		$result = wp_update_term( $change->object_id, $term->taxonomy, array( $field => (string) $change->after ) );
 
 		if ( is_wp_error( $result ) ) {
-			throw new FixException( $result->get_error_message(), 'term_update_failed' );
+			throw new FixException( esc_html( $result->get_error_message() ), 'term_update_failed' );
 		}
 
 		return true;
@@ -170,7 +172,7 @@ abstract class AbstractFixer implements FixerInterface {
 
 		if ( 2 !== count( $parts ) ) {
 			throw new FixException(
-				sprintf( 'Field "%s" is missing its scope prefix.', $field ),
+				esc_html( sprintf( 'Field "%s" is missing its scope prefix.', $field ) ),
 				'malformed_field'
 			);
 		}
@@ -188,9 +190,9 @@ abstract class AbstractFixer implements FixerInterface {
 
 		if ( ! $post ) {
 			throw new FixException(
-				sprintf( 'Post %d no longer exists.', $post_id ),
+				esc_html( sprintf( 'Post %d no longer exists.', $post_id ) ),
 				'post_missing',
-				array( 'post_id' => $post_id )
+				array( 'post_id' => $post_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 
@@ -207,9 +209,9 @@ abstract class AbstractFixer implements FixerInterface {
 
 		if ( ! $term || is_wp_error( $term ) ) {
 			throw new FixException(
-				sprintf( 'Term %d no longer exists.', $term_id ),
+				esc_html( sprintf( 'Term %d no longer exists.', $term_id ) ),
 				'term_missing',
-				array( 'term_id' => $term_id )
+				array( 'term_id' => $term_id ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 			);
 		}
 

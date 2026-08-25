@@ -9,7 +9,9 @@ namespace SEOAgent\Seo;
 
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * llms.txt is a plain-Markdown index pointing answer engines at the pages you
@@ -33,7 +35,11 @@ final class LlmsTxt {
 	 * @param \WP $wp Request object.
 	 */
 	public static function maybe_serve( $wp ): void {
-		$path = (string) wp_parse_url( (string) ( $_SERVER['REQUEST_URI'] ?? '' ), PHP_URL_PATH );
+		$request_uri = isset( $_SERVER['REQUEST_URI'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) )
+			: '';
+
+		$path = (string) wp_parse_url( $request_uri, PHP_URL_PATH );
 
 		if ( 'llms.txt' !== trim( $path, '/' ) ) {
 			return;

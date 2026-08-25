@@ -15,7 +15,9 @@ use SEOAgent\Audit\ObjectIterator;
 use SEOAgent\Support\Content;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Finds pages whose body content is substantially the same as another page's.
@@ -158,7 +160,7 @@ final class DuplicateContentChecker extends AbstractChecker {
 		$post_types   = $context->post_types();
 		$placeholders = implode( ',', array_fill( 0, count( $post_types ), '%s' ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT pm.post_id, pm.meta_value AS hash, p.post_title, p.post_type
@@ -171,6 +173,7 @@ final class DuplicateContentChecker extends AbstractChecker {
 			),
 			ARRAY_A
 		) ?: array();
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
 		if ( count( $rows ) < 2 ) {
 			return CheckerResult::done( array(), count( $rows ) );

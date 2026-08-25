@@ -14,7 +14,9 @@ use SEOAgent\Support\Content;
 use SEOAgent\Support\Html;
 use SEOAgent\Support\Text;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Finds pages that already answer questions in their headings but do not say

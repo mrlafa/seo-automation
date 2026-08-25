@@ -13,7 +13,9 @@ use SEOAgent\Fix\FixException;
 use SEOAgent\Seo\SeoAdapterInterface;
 use SEOAgent\Support\Html;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Swaps a dead URL for a working one across every page that links to it, or
@@ -54,7 +56,7 @@ final class BrokenLinkFixer extends AbstractFixer {
 		$targets = array_map( 'intval', (array) ( $payload['post_ids'] ?? array() ) );
 
 		if ( '' === $broken || empty( $targets ) ) {
-			throw new FixException( 'This issue records no URL or no pages to update.', 'no_target' );
+			throw new FixException( esc_html( 'This issue records no URL or no pages to update.' ), 'no_target' );
 		}
 
 		$unlink      = ! empty( $input['unlink'] );
@@ -63,15 +65,15 @@ final class BrokenLinkFixer extends AbstractFixer {
 		if ( ! $unlink ) {
 			if ( '' === $replacement ) {
 				throw new FixException(
-					sprintf( 'Supply a replacement URL for %s, or set "unlink" to true to remove the link.', $broken ),
+					esc_html( sprintf( 'Supply a replacement URL for %s, or set "unlink" to true to remove the link.', $broken ) ),
 					'input_required',
-					array( 'broken_url' => $broken )
+					array( 'broken_url' => $broken ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception context is machine-readable metadata for the REST layer, never rendered; the message argument is escaped.
 				);
 			}
 
 			if ( ! preg_match( '#^(https?://|/|mailto:)#i', $replacement ) ) {
 				throw new FixException(
-					sprintf( '"%s" is not a usable URL.', $replacement ),
+					esc_html( sprintf( '"%s" is not a usable URL.', $replacement ) ),
 					'invalid_replacement'
 				);
 			}
@@ -122,7 +124,7 @@ final class BrokenLinkFixer extends AbstractFixer {
 
 		if ( empty( $changes ) ) {
 			throw new FixException(
-				sprintf( '%s no longer appears in any of the recorded pages.', $broken ),
+				esc_html( sprintf( '%s no longer appears in any of the recorded pages.', $broken ) ),
 				'stale_issue'
 			);
 		}

@@ -12,7 +12,9 @@ use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\SiteChecker;
 use SEOAgent\Seo\SeoAdapterInterface;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Finds titles and descriptions shared by more than one page.
@@ -119,7 +121,7 @@ final class DuplicateMetaChecker extends SiteChecker {
 		$placeholders = implode( ',', array_fill( 0, count( $post_types ), '%s' ) );
 		$params       = array_merge( array( $meta_key ), $post_types, array( self::MAX_GROUPS ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT pm.meta_value AS value,
@@ -139,6 +141,7 @@ final class DuplicateMetaChecker extends SiteChecker {
 			),
 			ARRAY_A
 		) ?: array();
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
 		$issues = array();
 
@@ -197,7 +200,7 @@ final class DuplicateMetaChecker extends SiteChecker {
 		$placeholders = implode( ',', array_fill( 0, count( $post_types ), '%s' ) );
 		$params       = array_merge( $post_types, array( self::MAX_GROUPS ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- placeholders generated, values prepared.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Table and column names are compile-time constants or come from $wpdb->prefix; IN() placeholders are generated from a count, never from user input; every value is passed through $wpdb->prepare().
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT post_title AS value,
@@ -215,6 +218,7 @@ final class DuplicateMetaChecker extends SiteChecker {
 			),
 			ARRAY_A
 		) ?: array();
+		// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
 		$issues = array();
 

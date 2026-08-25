@@ -14,7 +14,9 @@ use SEOAgent\Audit\Issue;
 use SEOAgent\Audit\ObjectIterator;
 use SEOAgent\Support\Html;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Two-phase: collect every distinct link on the site, then verify them.

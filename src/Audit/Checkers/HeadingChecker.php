@@ -13,7 +13,9 @@ use SEOAgent\Audit\PostChecker;
 use SEOAgent\Support\Content;
 use SEOAgent\Support\Html;
 
-defined( 'ABSPATH' ) || defined( 'SEO_AGENT_TEST' ) || exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Checks the H1-H6 outline of each page.

@@ -31,6 +31,7 @@ class Logger {
 		update_option( self::OPTION_KEY, $logs, false );
 
 		if ( 'error' === $level && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Only reached when WP_DEBUG is on; this is the plugin's debug channel, and no credentials are logged.
 			error_log( '[SEO Automation] ' . ( is_string( $message ) ? $message : wp_json_encode( $message ) ) );
 		}
 	}
